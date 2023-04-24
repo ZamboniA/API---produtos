@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const { Produto, produtoJoiSchema } = require("../models/produto");
-
 const router = Router();
 
 
@@ -24,5 +23,102 @@ router.post("/produtos", async (req, res) => {
     }
 });
 
+
+//LISTANDO UM PRODUTO 
+
+router.get("/produtos", async (req, res) => {
+    try {
+        const { nome, preco, categoria, id } = req.query;
+
+        const filtrar = {};
+
+        if (id) {
+            filtrar._id = id;
+        }
+        if (nome) {
+            filtrar.nome = { $regex: new RegExp(nome, "i") };
+        }
+        if (categoria) {
+            filtrar.categoria = { $regex: new RegExp(categoria, "i") };
+        }
+        if (preco) {
+            filtrar.preco = {};
+            if (preco) {
+                filtrar.preco.$gte = parseFloat(preco);
+            }
+            if (preco) {
+                filtrar.preco.$lte = parseFloat(preco);
+            }
+        }
+
+        // Verifica se nenhum parâmetro de busca foi fornecido
+        if (!id && !nome && !categoria && !preco) {
+            return res.status(400).json({ message: "Informe um parametro." });
+        }
+
+        const produtos = await Produto.find(filtrar).sort({ nome: 1, categoria: 1 });
+
+        // Verifica se a lista de produtos está vazia
+        if (produtos.length === 0) {
+            return res.status(404).json({ message: "Nenhum produto encontrado." });
+        }
+
+        res.status(200).json(produtos);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Um erro aconteceu." });
+    }
+});
+
+
+
+
+//ATUALIZANDO UM PRODUTO
+
+router.put("/produtos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, descricao, quantidade, preco, desconto, dataDesconto, categoria, imagem } = req.body;
+
+        const produtoExistente = await Produto.findByIdAndUpdate(id, {
+            nome,
+            descricao,
+            quantidade,
+            preco,
+            desconto,
+            dataDesconto,
+            categoria,
+            imagem
+        });
+
+        if (produtoExistente) {
+            res.status(201).json({ message: "Produto editado." });
+        } else {
+            res.status(404).json({ message: "Produto não encontrado." });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Um erro aconteceu." });
+    }
+});
+
+
+//DELETANDO UM PRODUTO
+
+router.delete("/produtos/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const produtoExistente = await Produto.findByIdAndDelete(id);
+
+        if (produtoExistente) {
+            res.status(201).json({ message: "Produto deletado." });
+        } else {
+            res.status(404).json({ message: "Produto não encontrado." });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Um erro aconteceu." });
+    }
+});
 
 module.exports = router;

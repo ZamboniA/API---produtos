@@ -1,0 +1,184 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API - PRODUTOS",
+        "description": "É composto por um crud de produtos.",
+        "contact": {
+            "email": "andersonzamboni18@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "servers":[
+        {
+        "url": "http://localhost:3000/"
+        }
+],
+    "paths" : {
+        "/produtos": {
+            "post": {
+                "summary": "Cadastro de produto",
+                "description": "Essa rota será responsável por cadastrar um novo produto.",
+                "tags": ["Produto"],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description":"Produto adicionado."
+                    },
+                    "404": {
+                        "description":"Produto não encontrado."
+                    },
+                    "500": {
+                        "description": "Um erro aconteceu"
+                    }
+                }
+            },
+            "get": {
+                "description": "Essa rota será responsável por listar produtos por nome, categoria, ID e preço.",
+                "summary": "Listagem de produtos",
+                "tags": ["Produto"],
+                "parameters": [
+                {
+                "name": "nome",
+                "in": "query",
+                "description": "Nome do produto a ser procurado.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+                },
+                {
+                "name": "categoria",
+                "in": "query",
+                "description": "Categoria do produto a ser procurado.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+                },
+                {
+                "name": "id",
+                "in": "query",
+                "description": "ID do produto a ser procurado.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+                },
+                {
+                "name": "preco",
+                "in": "query",
+                "description": "Preço do produto a ser procurado.",
+                "required": false,
+                "schema": {
+                    "type": "number"
+                }
+                }
+            ],
+            "responses": {
+                "200": {
+                "description":"Produto encontrado."
+                },
+                "404": {
+                "description":"Produto não encontrado."
+                },
+                "500": {
+                "description": "Um erro aconteceu"
+                }
+            }
+            }
+        },
+
+        "/produtos/{id}":{
+            "put": {
+                "summary": "Atualização de produto",
+                "description": "Essa rota será responsável por atualizar um produto existente.",
+                "tags": ["Produto"],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Atualiza o produto através do id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description":"Produto editado."
+                    },
+                    "404": {
+                        "description":"Produto não encontrado."
+                    },
+                    "500": {
+                    "description": "Um erro aconteceu"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletar um produto",
+                "description": "Essa rota será responsável por deletar um produto existente.",
+                "tags": ["Produto"],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Deleta um produto através do id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description":"Produto editado."
+                    },
+                    "404": {
+                        "description":"Produto não encontrado."
+                    },
+                    "500": {
+                    "description": "Um erro aconteceu"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Produto":{
+                "type": "object",
+                "properties": {
+                    "nome": { "type": "string",  "example": "Cerveja" },
+                    "descricao": { "type": "string", "example": "Uma lata de cerveja de 500ml" },
+                    "quantidade": { "type": "number", "example": 55 },
+                    "preco": { "type": "number", "example": 5.99 },
+                    "desconto": { "type": "integer", "example": 10 },
+                    "dataDesconto": { "type": "string", "example": "2022-02-01" },
+                    "categoria": { "type": "string", "example": "bebidas" }
+                }
+            }
+        }
+    }
+}

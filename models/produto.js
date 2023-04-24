@@ -10,7 +10,7 @@ const Produto = model( "produto", new Schema ({
     desconto: Number,
     dataDesconto: Date,
     categoria: String,
-    imagem: String
+    imagem: Object
 }));
 
 const produtoJoiSchema = Joi.object({
@@ -21,7 +21,7 @@ const produtoJoiSchema = Joi.object({
     desconto: Joi.number().integer().min(0).max(100),
     dataDesconto: Joi.date(),
     categoria: Joi.string(),
-    imagem: Joi.string()
+    imagem: Joi.object()
 });
 
 

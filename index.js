@@ -7,6 +7,7 @@ const swaggerDocs = require("./swagger.json")
 
 const app = express();
 app.use(express.json());
+// app.use(express.)
 
 mongoose.connect(process.env.MONGODB_URL);
 

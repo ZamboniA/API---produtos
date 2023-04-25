@@ -21,7 +21,7 @@
                 "tags": ["Produto"],
                 "requestBody":{
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "$ref": "#/components/schemas/Produto"
                             }
@@ -103,7 +103,7 @@
                 "tags": ["Produto"],
                 "requestBody":{
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "$ref": "#/components/schemas/Produto"
                             }
@@ -134,15 +134,6 @@
                 "summary": "Deletar um produto",
                 "description": "Essa rota será responsável por deletar um produto existente.",
                 "tags": ["Produto"],
-                "requestBody":{
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Produto"
-                            }
-                        }
-                    }
-                },
                 "parameters": [
                     {
                         "name": "id",
@@ -176,7 +167,8 @@
                     "preco": { "type": "number", "example": 5.99 },
                     "desconto": { "type": "integer", "example": 10 },
                     "dataDesconto": { "type": "string", "example": "2022-02-01" },
-                    "categoria": { "type": "string", "example": "bebidas" }
+                    "categoria": { "type": "string", "example": "bebidas" },
+                    "imagem": { "type": "string", "example": "foto", "format": "binary"}
                 }
             }
         }
